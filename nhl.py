@@ -31,11 +31,13 @@ nhl_cities = nhl_cities.drop(['—', ''], axis=0)
 nhl_df['team'] = nhl_df['team'].apply(lambda x: x[:-1].strip() if x.endswith("*") else x.strip())
 nhl_df['area'] = nhl_df['team'].apply(lambda x: x.split(" ")[-1])
 nhl_df['area'] = nhl_df['area'].apply(lambda x: get_area(x))
+print(nhl_df)
 out = []
 for group, frame in nhl_df.groupby('area'):
-    total_wins = int(np.sum(frame['W']))
-    total_matches = int(np.sum(frame['L'])) + int(np.sum(frame['W']))
-    ratio = total_wins / total_matches
+    total_wins = np.sum(pd.to_numeric(frame['W']))
+    total_losses = np.sum(pd.to_numeric(frame['L']))
+    total_matches = total_wins + total_losses
+    ratio = (total_wins / total_matches)
     out_dict = {
         'Area': group,
         'Ratio': ratio
@@ -45,5 +47,7 @@ new_df = pd.DataFrame(out)
 new_df = new_df.set_index('Area')
 out_df = pd.merge(new_df, population, how="inner", left_index=True, right_index=True)
 out_df['Population (2016 est.)[8]'] = pd.to_numeric(out_df['Population (2016 est.)[8]'])
-population_by_region = out_df['Population (2016 est.)[8]'].to_list()
-win_loss_by_region = out_df['Ratio'].to_list()
+population_by_region = out_df['Population (2016 est.)[8]']
+win_loss_by_region = out_df['Ratio']
+print(new_df)
+print(stats.pearsonr(population_by_region, win_loss_by_region)[0])
