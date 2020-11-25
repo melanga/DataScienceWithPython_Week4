@@ -9,3 +9,12 @@ For each sport I would like you to answer the question: what is the win/loss rat
 * I highly suggest that you first tackle the four correlation questions in order, as they are all similar and worth the majority of grades for this assignment. This is by design!
 * It's fair game to talk with peers about high level strategy as well as the relationship between metropolitan areas and sports teams. However, do not post code solving aspects of the assignment (including such as dictionaries mapping areas to teams, or regexes which will clean up names).
 * There may be more teams than the assert statements test, remember to collapse multiple teams in one city into a single value!
+
+### Question 1
+* refer nhl.py
+### Question 2
+* refer nba.py
+### Question 3
+* refer mlb.py
+### Question 4
+* refer nfl.py
