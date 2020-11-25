@@ -15,8 +15,6 @@ cities = cities.iloc[:-1, [0, 3, 5, 6, 7, 8]]
 
 
 def sports_team_performance():
-
-
     sports = ['NFL', 'NBA', 'NHL', 'MLB']
     p_values = pd.DataFrame({k: np.nan for k in sports}, index=sports)
 

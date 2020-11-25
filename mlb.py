@@ -33,7 +33,6 @@ population = population.set_index('Metropolitan area')
 cities['MLB'] = cities['MLB'].apply(lambda x: clear_data(x))
 mlb_cities = cities[['Metropolitan area', 'MLB']].set_index('MLB')
 mlb_cities = mlb_cities.drop(['—', ''], axis=0)
-#mlb_df['team'] = mlb_df['team'].apply(lambda x: clear_nba_data(x))
 mlb_df['area'] = mlb_df['team'].apply(lambda x: x.split(" ")[-1])
 mlb_df['area'] = mlb_df['area'].apply(lambda x: get_area(x))
 mlb_df.at[0, 'area'] = 'Boston'
@@ -54,4 +53,4 @@ out_df = pd.merge(new_df, population, how="inner", left_index=True, right_index=
 out_df['Population (2016 est.)[8]'] = pd.to_numeric(out_df['Population (2016 est.)[8]'])
 population_by_region = out_df['Population (2016 est.)[8]'].to_list()
 win_loss_by_region = out_df['Ratio'].to_list()
-corr = stats.pearsonr(population_by_region, win_loss_by_region)
+corr = stats.pearsonr(population_by_region, win_loss_by_region)[0]
