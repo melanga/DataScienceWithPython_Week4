@@ -24,6 +24,10 @@ def get_area(team):
             return nfl_cities.at[each, 'Metropolitan area']
 
 
+def get_nfl_data():
+    return out_df
+
+
 population_by_region = []  # pass in metropolitan area population from cities
 win_loss_by_region = []  # pass in win/loss ratio from nhl_df in the same order as cities["Metropolitan area"]
 nfl_df = pd.read_csv("assets/nfl.csv")

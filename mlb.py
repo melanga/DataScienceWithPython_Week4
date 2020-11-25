@@ -18,6 +18,10 @@ def get_area(team):
             return mlb_cities.at[each, 'Metropolitan area']
 
 
+def get_mlb_data():
+    return out_df
+
+
 population_by_region = []  # pass in metropolitan area population from cities
 win_loss_by_region = []  # pass in win/loss ratio from nhl_df in the same order as cities["Metropolitan area"]
 mlb_df = pd.read_csv("assets/mlb.csv")
@@ -29,8 +33,6 @@ population = population.set_index('Metropolitan area')
 cities['MLB'] = cities['MLB'].apply(lambda x: clear_data(x))
 mlb_cities = cities[['Metropolitan area', 'MLB']].set_index('MLB')
 mlb_cities = mlb_cities.drop(['—', ''], axis=0)
-print(mlb_cities)
-print(mlb_df)
 #mlb_df['team'] = mlb_df['team'].apply(lambda x: clear_nba_data(x))
 mlb_df['area'] = mlb_df['team'].apply(lambda x: x.split(" ")[-1])
 mlb_df['area'] = mlb_df['area'].apply(lambda x: get_area(x))
