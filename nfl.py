@@ -24,6 +24,10 @@ def get_area(team):
             return nfl_cities.at[each, 'Metropolitan area']
 
 
+def get_nfl_data():
+    return out_df
+
+
 population_by_region = []  # pass in metropolitan area population from cities
 win_loss_by_region = []  # pass in win/loss ratio from nhl_df in the same order as cities["Metropolitan area"]
 nfl_df = pd.read_csv("assets/nfl.csv")
@@ -40,9 +44,10 @@ nfl_df['area'] = nfl_df['team'].apply(lambda x: x.split(" ")[-1])
 nfl_df['area'] = nfl_df['area'].apply(lambda x: get_area(x))
 out = []
 for group, frame in nfl_df.groupby('area'):
-    total_wins = int(np.sum(frame['W']))
-    total_matches = int(np.sum(frame['L'])) + int(np.sum(frame['W']))
-    ratio = total_wins / total_matches
+    total_wins = np.sum(pd.to_numeric(frame['W']))
+    total_losses = np.sum(pd.to_numeric(frame['L']))
+    total_matches = total_wins + total_losses
+    ratio = (total_wins / total_matches)
     out_dict = {
         'Area': group,
         'Ratio': ratio
@@ -54,4 +59,4 @@ out_df = pd.merge(new_df, population, how="inner", left_index=True, right_index=
 out_df['Population (2016 est.)[8]'] = pd.to_numeric(out_df['Population (2016 est.)[8]'])
 population_by_region = out_df['Population (2016 est.)[8]'].to_list()
 win_loss_by_region = out_df['Ratio'].to_list()
-print(stats.pearsonr(population_by_region, win_loss_by_region))
+corr = stats.pearsonr(population_by_region, win_loss_by_region)[0]

@@ -17,6 +17,10 @@ def get_area(team):
             return nhl_cities.at[each, 'Metropolitan area']
 
 
+def get_nhl_data():
+    return out_df
+
+
 population_by_region = []  # pass in metropolitan area population from cities
 win_loss_by_region = []  # pass in win/loss ratio from nhl_df in the same order as cities["Metropolitan area"]
 nhl_df = pd.read_csv("assets/nhl.csv")
@@ -31,7 +35,6 @@ nhl_cities = nhl_cities.drop(['—', ''], axis=0)
 nhl_df['team'] = nhl_df['team'].apply(lambda x: x[:-1].strip() if x.endswith("*") else x.strip())
 nhl_df['area'] = nhl_df['team'].apply(lambda x: x.split(" ")[-1])
 nhl_df['area'] = nhl_df['area'].apply(lambda x: get_area(x))
-print(nhl_df)
 out = []
 for group, frame in nhl_df.groupby('area'):
     total_wins = np.sum(pd.to_numeric(frame['W']))
@@ -49,5 +52,4 @@ out_df = pd.merge(new_df, population, how="inner", left_index=True, right_index=
 out_df['Population (2016 est.)[8]'] = pd.to_numeric(out_df['Population (2016 est.)[8]'])
 population_by_region = out_df['Population (2016 est.)[8]']
 win_loss_by_region = out_df['Ratio']
-print(new_df)
-print(stats.pearsonr(population_by_region, win_loss_by_region)[0])
+corr = stats.pearsonr(population_by_region, win_loss_by_region)[0]
