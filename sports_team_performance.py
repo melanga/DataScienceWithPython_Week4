@@ -17,11 +17,12 @@ data_set = {'NFL': NFL,
             'NBA': NBA,
             'NHL': NHL,
             'MLB': MLB}
+sports = ['NFL', 'NBA', 'NHL', 'MLB']
 
 
 def get_p_value(k):
     p_values = []
-    for each in data_set:
+    for each in sports:
         df = pd.merge(data_set[k], data_set[each], how="inner", left_index=True, right_index=True)
         nhl_corr = stats.ttest_rel(df['Ratio_x'], df['Ratio_y'])[1]
         nhl_corr = round(nhl_corr, 2)
